@@ -1,4 +1,4 @@
-const { User } = require("../models/user"); // your updated User model
+const { User } = require("../models"); // your updated User model
 
 /**
  * Maps a GitHub profile object to the User model fields
@@ -9,40 +9,30 @@ function mapGitHubProfileToUser(githubProfile) {
   const json = githubProfile._json || {};
 
   return {
-    githubId: json.id?.toString(),
-    nodeId: json.node_id,
+    github_id: json.id?.toString(),
+    node_id: json.node_id,
     username: json.login,
-    displayName: githubProfile.displayName || json.name || "",
-    avatarUrl: json.avatar_url,
-    gravatarId: json.gravatar_id,
-    profileUrl: json.html_url,
-    apiUrl: json.url,
-    followersUrl: json.followers_url,
-    followingUrl: json.following_url,
-    gistsUrl: json.gists_url,
-    starredUrl: json.starred_url,
-    subscriptionsUrl: json.subscriptions_url,
-    organizationsUrl: json.organizations_url,
-    reposUrl: json.repos_url,
-    eventsUrl: json.events_url,
-    receivedEventsUrl: json.received_events_url,
-    type: json.type,
-    userViewType: json.user_view_type,
-    siteAdmin: json.site_admin,
-    name: json.name,
+    name: githubProfile.displayName || json.name || "",
+    avatar_url: json.avatar_url,
+    profile_url: json.html_url,
+    followers_url: json.followers_url,
+    following_url: json.following_url,
     company: json.company,
     blog: json.blog,
     location: json.location,
     bio: json.bio,
-    twitterUsername: json.twitter_username,
-    notificationEmail: json.notification_email,
-    publicRepos: json.public_repos,
-    publicGists: json.public_gists,
-    followers: json.followers,
-    following: json.following,
-    createdAtGitHub: json.created_at ? new Date(json.created_at) : null,
-    updatedAtGitHub: json.updated_at ? new Date(json.updated_at) : null,
+    twitter_username: json.twitter_username,
+    //publicGists: json.public_gists,
+    followers_count: json.followers,
+    following_count: json.following,
+    github_updated_at: json.updated_at || null,
     email: githubProfile.emails?.[0]?.value || json.email || null,
+    html_url:json.html_url,
+    gists_url: json.gists_url,
+    repos_url:json.repos_url,
+    starred_url: json.starred_url,
+    public_repos_count: json.public_repos,
+    github_created_at: json.created_at,
   };
 }
 
@@ -51,10 +41,11 @@ function mapGitHubProfileToUser(githubProfile) {
  */
 async function upsertGitHubUser(githubProfile) {
   const userData = mapGitHubProfileToUser(githubProfile);
-
+  console.log(githubProfile, 'data being stoed');
+  
   // Upsert user (create if not exists, otherwise update)
   const [user, created] = await User.upsert(userData, {
-    where: { githubId: userData.githubId },
+    where: { github_id: userData.github_id },
     returning: true,
   });
 

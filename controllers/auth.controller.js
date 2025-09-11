@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken")
 const { env } = require("../config/env")
-const { User } = require("../models/user")
+const { User } = require("../models")
 
 function setAuthCookie(res, userId) {
   const token = jwt.sign({ sub: userId }, env.jwt.secret, { expiresIn: env.jwt.expiresIn })
@@ -16,9 +16,7 @@ function setAuthCookie(res, userId) {
 
 const authController = {
   githubCallback: (req, res) => {
-    const user = req.user
-    console.log(user, "github callback ====================");
-    
+    const user = req.user 
     if (!user) return res.redirect("/auth/failure")
 
     setAuthCookie(res, user.id)
@@ -26,8 +24,9 @@ const authController = {
   },
 
   me: async (req, res) => {
+  
     const user = await User.findByPk(req.userId, {
-      attributes: ["id", "username", "displayName", "email", "avatarUrl"],
+      attributes: {exclude : ["node_id", "github_id"]},
     })
     if (!user) return res.status(404).json({ message: "Not found" })
     res.json(user)

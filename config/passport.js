@@ -1,7 +1,8 @@
 const passport = require("passport")
 const GitHubStrategy = require("passport-github2").Strategy
 const { env } = require("./env")
-const { User } = require("../models/user")
+const { User } = require("../models")
+const { upsertGitHubUser } = require("../utils")
 
 passport.serializeUser((user, done) => {
   done(null, user.id)
@@ -26,23 +27,9 @@ passport.use(
     },
     async (_accessToken, _refreshToken, profile, done) => {
       try {
-        const githubId = profile.id
-        //const nodeId = profile.node_id
-        const username = profile.username || ""
-        const displayName = profile.displayName || ""
-        const avatarUrl = profile.photos?.[0]?.value || ""
-        const email = profile.emails?.[0]?.value || null
-        console.log(profile, "================================ profile");
-       
+        console.log(profile, "profile =====================");
         
-
-        const [user] = await User.findOrCreate({
-          where: { githubId },
-          defaults: { githubId, username, displayName, avatarUrl, email },
-        })
-
-        await user.update({ username, displayName, avatarUrl, email })
-
+        const user = await upsertGitHubUser(profile)
         return done(null, user)
       } catch (e) {
         return done(e, null)

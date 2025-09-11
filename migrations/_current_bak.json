@@ -163,7 +163,7 @@
                 },
                 "repos_url": {
                     "field": "repos_url",
-                    "seqType": "Sequelize.TEXT"
+                    "seqType": "Sequelize.STRING"
                 },
                 "public_repos_count": {
                     "field": "public_repos_count",
@@ -183,11 +183,11 @@
                 },
                 "gists_url": {
                     "field": "gists_url",
-                    "seqType": "Sequelize.TEXT"
+                    "seqType": "Sequelize.STRING"
                 },
                 "starred_url": {
                     "field": "starred_url",
-                    "seqType": "Sequelize.TEXT"
+                    "seqType": "Sequelize.STRING"
                 },
                 "github_created_at": {
                     "field": "github_created_at",
@@ -302,5 +302,5 @@
     "path": "D:\\dev\\devhub-api\\migrations\\_current.json",
     "backupPath": "D:\\dev\\devhub-api\\migrations\\_current_bak.json",
     "exists": true,
-    "revision": 6
+    "revision": 5
 }

@@ -11,14 +11,21 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     company: DataTypes.STRING,
     bio: DataTypes.TEXT,
+    location: DataTypes.TEXT,
     email: DataTypes.STRING,
     blog: DataTypes.TEXT,
     followers_count: { type: DataTypes.INTEGER, defaultValue: 0 },
     following_count: { type: DataTypes.INTEGER, defaultValue: 0 },
     repos_url: DataTypes.TEXT,
+    public_repos_count: DataTypes.STRING,
     followers_url: DataTypes.TEXT,
     following_url: DataTypes.TEXT,
-    github_updated_at: DataTypes.DATE
+    github_updated_at: DataTypes.DATE,
+    gists_url: DataTypes.TEXT,
+    repos_url:DataTypes.TEXT,
+    starred_url: DataTypes.TEXT,
+    public_repos_count: DataTypes.STRING,
+    github_created_at: DataTypes.DATE,
   }, {});
 
   User.associate = (models) => {

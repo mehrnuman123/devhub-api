@@ -6,10 +6,10 @@ const routes = require("./routes")
 const { errorHandler } = require("./middleware/error")
 const { env } = require("./config/env")
 const passport = require("./config/passport")
-const { initModels } = require("./models")
+//const { initModels } = require("./models/index")
 
 async function main() {
-  await initModels()
+  //await initModels()
 
   const app = express()
 
